@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import router from "./src/routes/router.js";
+import { UserRoutes, ProductRoutes, AuthRoutes } from "./src/routes/router.js";
 import connectDB from "./src/utils/connectDB.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -14,7 +14,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json());
 
-app.use('/api', router)
+app.use('/api', AuthRoutes)
+app.use('/api', UserRoutes)
+app.use('/api', ProductRoutes)
 
 
 const initApp = () => {
@@ -50,7 +52,7 @@ const optionsSwg = {
     },
     apis: ["./src/doc/*.js"],
   };
-  
-  const specs = swaggerJsdoc(optionsSwg);
-  
-  app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));
+
+const specs = swaggerJsdoc(optionsSwg);
+
+app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));
