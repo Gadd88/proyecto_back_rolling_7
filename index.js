@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import { UserRoutes, ProductRoutes, AuthRoutes } from "./src/routes/router.js";
-import connectDB from "./src/utils/connectDB.js";
+// import UserRoutes from './src/routes/user-route.js'
+// import AuthRoutes from './src/routes/auth-route.js'
+// import ProductRoutes from './src/routes/product-route.js'
+import { connectDB } from "./src/utils/connectDB.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -14,9 +16,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json());
 
-app.use('/api', AuthRoutes)
-app.use('/api', UserRoutes)
-app.use('/api', ProductRoutes)
+// app.use('/api', AuthRoutes)
+// app.use('/api', UserRoutes)
+// app.use('/api', ProductRoutes)
 
 
 const initApp = () => {

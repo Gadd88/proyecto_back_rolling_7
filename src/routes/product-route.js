@@ -1,5 +1,5 @@
 import express from "express";
-import ProductController from "../controllers/product-controller.js";
+// import ProductController from "../controllers/product-controller.js";
 import { checkAuth } from "../middlewares/auth.js";
 
 const router = express.Router();
