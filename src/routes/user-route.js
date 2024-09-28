@@ -1,14 +1,19 @@
-import express from "express";
-// import UserController from "../controllers/user-controller.js";
-import { checkAuth } from "../middlewares/auth.js";
+const express = require("express");
+const {
+  crearUsuario,
+  traerTodosLosUsuarios,
+  traerUnUsuario,
+  actualizarUnUsuario,
+  eliminarUnUsuario
+} = require("../controllers/user-controller.js");
+const checkAuth = require("../middlewares/auth.js");  
 
 const router = express.Router();
 
-router.get('/users');
-router.get('/users/:user_id');
-router.post('/users', checkAuth('admin'));
-router.patch('/users/:user_id', checkAuth('admin'))
-router.delete('/users/:user_id', checkAuth('admin'))
+router.get('/users', traerTodosLosUsuarios);
+router.get('/users/:user_id', traerUnUsuario);
+router.post('/users', crearUsuario);
+router.patch('/users/:user_id', checkAuth('admin'), actualizarUnUsuario);
+router.delete('/users/:user_id', checkAuth('admin'), eliminarUnUsuario);
 
-
-export default router
+module.exports = router;
