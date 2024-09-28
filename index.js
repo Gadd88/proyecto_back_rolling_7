@@ -7,6 +7,8 @@ import "dotenv/config";
 import { connectDB } from "./src/utils/connectDB.js";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import router from "./src/routes/product-route.js";
+
 
 const PORT = process.env.PORT ? process.env.PORT : 3001;
 
@@ -56,5 +58,5 @@ const optionsSwg = {
   };
 
 const specs = swaggerJsdoc(optionsSwg);
-
-app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api', router)
+//app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));
