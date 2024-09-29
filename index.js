@@ -1,13 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-require('dotenv').config();
-require("dotenv/config");
-const UserRoutes = require('./src/routes/user-route.js');
-const AuthRoutes = require('./src/routes/auth-route.js');
-// const ProductRoutes = require('./src/routes/product-route.js');
-const { connectDB } = require("./src/utils/connectDB.js");
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+import express from "express";
+import cors from "cors";
+import "dotenv/config";
+// import UserRoutes from './src/routes/user-route.js'
+// import AuthRoutes from './src/routes/auth-route.js'
+// import ProductRoutes from './src/routes/product-route.js'
+import { connectDB } from "./src/utils/connectDB.js";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import router from "./src/routes/product-route.js";
 
 const PORT = process.env.PORT ? process.env.PORT : 3001;
 
@@ -54,4 +54,5 @@ const optionsSwg = {
 
 const specs = swaggerJsdoc(optionsSwg);
 
-app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api', router)
+//app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(specs));

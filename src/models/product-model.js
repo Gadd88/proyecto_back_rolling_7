@@ -16,7 +16,12 @@ const ProductSchema = new Schema({
         required: true,
         trim: true
     },
-    product_image:{
+    product_image:{ // url
+        type:String,
+        required: true,
+        trim: true
+    },
+    product_image_id:{ // _id
         type:String,
         required: true,
         trim: true
