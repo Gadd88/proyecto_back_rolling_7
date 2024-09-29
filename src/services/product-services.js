@@ -1,7 +1,7 @@
-import ProductModel from '../models/product-model.js'
-import cloudinary from '../utils/cloudinary.js';
+const ProductModel = require('../models/product-model.js');
+const cloudinary = require('../utils/cloudinary.js');
 
-export const nuevoProducto = async (body, imagenPath) => {
+ const nuevoProducto = async (body, imagenPath) => {
   const bodyProduct = body;
   try {
     const imagen = await cloudinary.uploader.upload(imagenPath);
@@ -30,7 +30,7 @@ export const nuevoProducto = async (body, imagenPath) => {
   }
 };
 
-export const obtenerTodosProductos = async () => {
+ const obtenerTodosProductos = async () => {
   try {
     const productos = await ProductModel.find();
     return {
@@ -47,7 +47,7 @@ export const obtenerTodosProductos = async () => {
   }
 };
 
-export const obtenerProductoPorCategoria = async (req) => {
+ const obtenerProductoPorCategoria = async (req) => {
   try {
     let productos = await ProductModel.find();
     productos = productos.filter((producto) => producto.product_category.toLocaleLowerCase() === req.toLocaleLowerCase());
@@ -65,7 +65,7 @@ export const obtenerProductoPorCategoria = async (req) => {
   }
 };
 
-export const obtenerProducto = async (idProducto) => {
+ const obtenerProducto = async (idProducto) => {
   try {
     const producto = await ProductModel.findById(idProducto);
     if (!producto)
@@ -83,7 +83,7 @@ export const obtenerProducto = async (idProducto) => {
   }
 };
 
-export const actualizarProducto = async (idProducto, req) => {
+ const actualizarProducto = async (idProducto, req) => {
   const bodyProduct = req.body;
   if(req.file) {
     try {
@@ -113,7 +113,7 @@ export const actualizarProducto = async (idProducto, req) => {
   }
 };
 
-export const eliminarProducto = async (idProducto) => {
+ const eliminarProducto = async (idProducto) => {
   try {
     await eliminarImagen(idProducto)
     const exist = await ProductModel.findByIdAndDelete(idProducto);
@@ -129,6 +129,49 @@ export const eliminarProducto = async (idProducto) => {
     };
   }
 };
+
+const eliminarImagen = async (idProducto) => {
+  try {
+    const producto = await ProductModel.findById(idProducto);
+    if (!producto) return { message: "Producto no encontrado", statusCode: 500 };
+    if (producto.product_image && producto.product_image_id) {
+      // Eliminar la imagen de Cloudinary usando el public_id
+      await cloudinary.uploader.destroy(producto.product_image_id);
+      
+      // Eliminar la referencia de la imagen en el producto
+      producto.product_image = null;
+      producto.product_image_id = null;
+      
+      await producto.save();
+      
+      return {
+        message: "Imagen eliminada",
+        statusCode: 200,
+        producto,
+      };
+    } else {
+      return {
+        message: "No hay imagen para eliminar",
+        statusCode: 400,
+      };
+    }
+  } catch (error) {
+    return {
+      message: "Error al eliminar la imagen",
+      statusCode: 500,
+    };
+  }
+};
+
+module.exports = {
+  nuevoProducto,
+  obtenerTodosProductos,
+  obtenerProducto,
+  actualizarProducto,
+  eliminarProducto,
+  obtenerProductoPorCategoria,
+  eliminarImagen
+}
 
 // export const agregarQuitarProductoFav = async (idProducto, idUsuario) => {
 //   try {
@@ -179,35 +222,4 @@ export const eliminarProducto = async (idProducto) => {
 //   }
 // }
 
-export const eliminarImagen = async (idProducto) => {
-  try {
-    const producto = await ProductModel.findById(idProducto);
-    if (!producto) return { message: "Producto no encontrado", statusCode: 500 };
-    if (producto.product_image && producto.product_image_id) {
-      // Eliminar la imagen de Cloudinary usando el public_id
-      await cloudinary.uploader.destroy(producto.product_image_id);
-      
-      // Eliminar la referencia de la imagen en el producto
-      producto.product_image = null;
-      producto.product_image_id = null;
-      
-      await producto.save();
-      
-      return {
-        message: "Imagen eliminada",
-        statusCode: 200,
-        producto,
-      };
-    } else {
-      return {
-        message: "No hay imagen para eliminar",
-        statusCode: 400,
-      };
-    }
-  } catch (error) {
-    return {
-      message: "Error al eliminar la imagen",
-      statusCode: 500,
-    };
-  }
-};
+

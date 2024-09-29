@@ -1,6 +1,6 @@
-import * as serviciosProductos from '../services/product-services.js'
+const serviciosProductos = require('../services/product-services.js')
 
-export const crearProducto = async (req, res) => {
+const crearProducto = async (req, res) => {
   const result = await serviciosProductos.nuevoProducto(req.body, req.file.path)
   if(result.statusCode === 201) {
     res.status(201).json({message: result.message , status:result.statusCode});
@@ -10,7 +10,7 @@ export const crearProducto = async (req, res) => {
   }
 }
 
-export const traerTodosProductos = async (req, res) => {
+const traerTodosProductos = async (req, res) => {
   const result = await serviciosProductos.obtenerTodosProductos();
   if(result.statusCode === 200) {
     res.status(200).json({status:result.statusCode, message: result.message, productos: result.productos });
@@ -19,7 +19,7 @@ export const traerTodosProductos = async (req, res) => {
   }
 }
 
-export const traerProductosPorCategoria = async (req, res) => {
+const traerProductosPorCategoria = async (req, res) => {
   console.log(req.params)
   const result = await serviciosProductos.obtenerProductoPorCategoria(req.params.category);
   if(result.statusCode === 200) {
@@ -29,7 +29,7 @@ export const traerProductosPorCategoria = async (req, res) => {
   }
 }
 
-export const traerUnProducto = async (req, res) => {
+const traerUnProducto = async (req, res) => {
   const result = await serviciosProductos.obtenerProducto(req.params.product_id);
   if(result.statusCode === 200) {
     res.status(200).json({status:result.statusCode, message: result.message, producto: result.producto});
@@ -38,7 +38,7 @@ export const traerUnProducto = async (req, res) => {
   }
 }
 
-export const actualizarUnProducto = async (req, res) => {
+const actualizarUnProducto = async (req, res) => {
   const result = await serviciosProductos.actualizarProducto(req.params.product_id, req);
   if(result.statusCode === 200) {
     res.status(200).json({ status:result.statusCode, message: result.message, producto: result.producto});
@@ -47,7 +47,7 @@ export const actualizarUnProducto = async (req, res) => {
   }
 }
 
-export const eliminarProducto = async (req, res) => {
+const eliminarProducto = async (req, res) => {
   console.log(req.params)
   const result = await serviciosProductos.eliminarProducto(req.params.product_id);
   if(result.statusCode === 200) {
@@ -55,6 +55,15 @@ export const eliminarProducto = async (req, res) => {
   } else {
     res.status(500).json({message: result.message});
   }
+}
+
+module.exports = {
+  crearProducto,
+  traerTodosProductos,
+  traerUnProducto,
+  actualizarUnProducto,
+  eliminarProducto,
+  traerProductosPorCategoria
 }
 
 // export const agregarQuitarProductoFavorito = async (req, res) => {

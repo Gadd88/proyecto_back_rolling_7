@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 const ProductSchema = new Schema({
     product_name:{
@@ -50,4 +50,4 @@ ProductSchema.methods.toJSON = function() {
 const ProductModel = model('products', ProductSchema)
 
 
-export default ProductModel
+module.exports = ProductModel
