@@ -20,7 +20,6 @@ const traerTodosProductos = async (req, res) => {
 }
 
 const traerProductosPorCategoria = async (req, res) => {
-  console.log(req.params)
   const result = await serviciosProductos.obtenerProductoPorCategoria(req.params.category);
   if(result.statusCode === 200) {
     res.status(200).json({status:result.statusCode, message: result.message, productos: result.productos});
@@ -48,7 +47,6 @@ const actualizarUnProducto = async (req, res) => {
 }
 
 const eliminarProducto = async (req, res) => {
-  console.log(req.params)
   const result = await serviciosProductos.eliminarProducto(req.params.product_id);
   if(result.statusCode === 200) {
     res.status(200).json({message: result.message, status:result.statusCode});

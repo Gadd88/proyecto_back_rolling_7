@@ -23,7 +23,7 @@ const UsuarioSchema = new Schema({
   },
   isActive: {
     type: Boolean,
-    default: false
+    default: true
   },
   user_cart: [],
   user_favs: []

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const checkAuth = (rol) => (req, res, next) => {
     try{
-        const token = req.header('auth')
+        const token = req.header('Authorization').split(' ')[1]
         if(!token){
             return res.status(403).json({message: 'No estas autorizado'})
         }
@@ -10,7 +10,7 @@ const checkAuth = (rol) => (req, res, next) => {
         if(verifyToken.rol !== rol){
             return res.status(403).json({message: 'No estas autorizado'})
         }
-        req.user_id = verifyToken.user_id
+        req.user_id = verifyToken.idUsuario
 
         next()
 

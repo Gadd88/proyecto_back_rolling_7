@@ -29,7 +29,7 @@ const traerTodosLosUsuarios = async (req, res) => {
 }
 
 const traerUnUsuario = async (req, res) => {
-  const result = await serviciosDeUsuarios.obtenerUsuario(req.params.idUsuario)
+  const result = await serviciosDeUsuarios.obtenerUsuario(req.params.user_id)
 
   if(result.statusCode === 200){
     res.status(200).json({usuario: result.usuario, msg: result.msg})
@@ -40,7 +40,7 @@ const traerUnUsuario = async (req, res) => {
 }
 
 const actualizarUnUsuario = async (req, res) => {
-  const result = await serviciosDeUsuarios.actualizarUsuario(req.params.idUsuario, req.body)
+  const result = await serviciosDeUsuarios.actualizarUsuario(req.params.user_id, req.body)
   
   if(result.statusCode === 200){
     res.status(200).json({msg: result.msg})
@@ -50,10 +50,10 @@ const actualizarUnUsuario = async (req, res) => {
 }
 
 const eliminarUnUsuario = async (req, res) => {
-  const result = await serviciosDeUsuarios.eliminarUsuario(req.params.idUsuario)
+  const result = await serviciosDeUsuarios.eliminarUsuario(req.params.user_id)
   
   if(result.statusCode === 200){
-    res.status(200).json({msg: result.msg, usuarios: result.usuarios})
+    res.status(200).json({msg: result.msg})
    }else{
     res.status(500).json({msg: result.msg})
    }
@@ -76,7 +76,7 @@ const inicioSesion = async( req, res) => {
 }
 
 const habilitarUnUsuario = async(req, res) => {
-  const result = await serviciosDeUsuarios.habilitarUsuario(req.params.idUsuario)
+  const result = await serviciosDeUsuarios.habilitarUsuario(req.params.user_id)
   if(result.statusCode === 200){
     res.status(200).json({msg: result.msg} )
   }else{
@@ -85,7 +85,7 @@ const habilitarUnUsuario = async(req, res) => {
 }
 
 const deshabilitarUnUsuario = async(req, res) => {
-  const result = await serviciosDeUsuarios.deshabilitarUsuario(req.params.idUsuario)
+  const result = await serviciosDeUsuarios.deshabilitarUsuario(req.params.user_id)
   if(result.statusCode === 200){
     res.status(200).json({msg: result.msg} )
   }else{
