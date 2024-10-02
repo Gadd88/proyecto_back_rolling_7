@@ -143,9 +143,9 @@ const inicioSesionUsuario = async (body) => {
 
 const habilitarUsuario = async (idUsuario) => {
   const usuario = await UsuarioModel.findById(idUsuario);
-  usuario.bloqueado = false;
+  if(usuario.isActive) return 
+  usuario.isActive = true;
   await usuario.save();
-
   return {
     msg: "Usuario habilitado",
     statusCode: 200,
@@ -154,7 +154,8 @@ const habilitarUsuario = async (idUsuario) => {
 
 const deshabilitarUsuario = async (idUsuario) => {
   const usuario = await UsuarioModel.findById(idUsuario);
-  usuario.bloqueado = true;
+  if(!usuario.isActive) return
+  usuario.isActive = false;
   await usuario.save();
 
   return {
