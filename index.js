@@ -27,7 +27,8 @@ const initApp = () => {
   try {
     connectDB();
     app.listen(PORT, () => {
-      console.log(`Server listening on http://localhost:${PORT}`);
+      console.log(`Server listening on http://localhost:${PORT}`)
+      console.log(`Documentation available at http://localhost:${PORT}/api/doc`);
     });
   } catch (error) {
     console.log(error);
