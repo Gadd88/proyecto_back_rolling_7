@@ -55,39 +55,35 @@ const eliminarProducto = async (req, res) => {
   }
 }
 
+const agregarQuitarProductoFavorito = async (req, res) => {
+  //usuario
+  //6700670aba361c6683acbc7d
+  //product
+  //670067773a2772974bf04d36
+  console.log(req.body.idUsuario, "usuario")
+  const result = await serviciosProductos.agregarQuitarProductoFav(req.params.idProducto, req.body.idUsuario);
+  if(result.statusCode === 200) {
+    res.status(200).json({status:result.statusCode, message: result.message});
+  } else {
+    res.status(500).json({status:result.statusCode, message: result.message});
+  }
+}
+const agregarQuitarProductoCarritoController = async (req, res) => {
+  const result = await serviciosProductos.agregarQuitarProductoCarrito(req.params.idProducto, req.body.idUsuario);
+  if(result.statusCode === 200) {
+    res.status(200).json({status:result.statusCode, message: result.message});
+  } else {
+    res.status(500).json({status:result.statusCode, message: result.message});
+  }
+}
+
 module.exports = {
   crearProducto,
   traerTodosProductos,
   traerUnProducto,
   actualizarUnProducto,
   eliminarProducto,
-  traerProductosPorCategoria
+  traerProductosPorCategoria,
+  agregarQuitarProductoFavorito,
+  agregarQuitarProductoCarritoController
 }
-
-// export const agregarQuitarProductoFavorito = async (req, res) => {
-//   const result = await serviciosProductos.agregarQuitarProductoFav(req.params.idProducto, req.idUsuario);
-//   if(result.statusCode === 200) {
-//     res.status(200).json({status:result.statusCode, message: result.message});
-//   } else {
-//     res.status(500).json({status:result.statusCode, message: result.message});
-//   }
-// }
-
-// export const agregarProductoCarrito = async (req, res) => {
-//   console.log(req.params.idProducto, req.idUsuario);
-//   const result = await serviciosProductos.agregarProductoCarrito(req.params.idProducto, req.idUsuario);
-//   if(result.statusCode === 200) {
-//     res.status(200).json({status:result.statusCode, message: result.message});
-//   } else {
-//     res.status(500).json({status:result.statusCode, message: result.message});
-//   }
-// }
-
-// export const eliminarProductoCarrito = async (req, res) => {
-//   const result = await serviciosProductos.eliminarProductoCarrito(req.params.idProducto, req.idUsuario);
-//   if(result.statusCode === 200) {
-//     res.status(200).json({status:result.statusCode, message: result.message});
-//   } else {
-//     res.status(500).json({status:result.statusCode, message: result.message});
-//   }
-// }
