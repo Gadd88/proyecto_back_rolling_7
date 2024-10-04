@@ -1,3 +1,4 @@
+const UsuarioModel = require('../models/user-model.js')
 const ProductModel = require('../models/product-model.js');
 const cloudinary = require('../utils/cloudinary.js');
 const fs = require('fs')
@@ -183,6 +184,48 @@ const eliminarImagen = async (idProducto) => {
   }
 };
 
+const agregarQuitarProductoFav = async (idProducto, idUsuario) => {
+  try {
+    const {_id} = await ProductModel.findById(idProducto);
+    const idString = _id.toString();
+    const usuario = await UsuarioModel.findById(idUsuario);
+    if (usuario.user_favs.includes(_id)) {
+      usuario.user_favs = usuario.user_favs.filter(fav => fav.toString() !== idString);
+      await usuario.save();
+      return { message: "Producto eliminado de favoritos", statusCode: 200 };
+    } else {
+      usuario.user_favs.push(_id);
+      await usuario.save();
+      return { message: "Producto agregado a los favoritos", statusCode: 200 };
+    }
+  }
+  catch (error) {
+    console.log(error);
+    return { message: "Error al agregar o quitar producto de favoritos", statusCode: 500 };
+  }
+}
+
+const agregarQuitarProductoCarrito = async (idProducto, idUsuario) => {
+  try {
+    const {_id} = await ProductModel.findById(idProducto);
+    const idString = _id.toString();
+    const usuario = await UsuarioModel.findById(idUsuario);
+    if (usuario.user_cart.includes(_id)) {
+      usuario.user_cart = usuario.user_cart.filter(cart => cart.toString() !== idString);
+      await usuario.save();
+      return { message: "Producto eliminado de carrito", statusCode: 200 };
+    } else {
+      usuario.user_cart.push(_id);
+      await usuario.save();
+      return { message: "Producto agregado al carrito", statusCode: 200 };
+    }
+  }
+  catch (error) {
+    console.log(error);
+    return { message: "Error al agregar o quitar producto del carrito", statusCode: 500 };
+  }
+}
+
 module.exports = {
   nuevoProducto,
   obtenerTodosProductos,
@@ -190,56 +233,7 @@ module.exports = {
   actualizarProducto,
   eliminarProducto,
   obtenerProductoPorCategoria,
-  eliminarImagen
+  eliminarImagen,
+  agregarQuitarProductoFav,
+  agregarQuitarProductoCarrito
 }
-
-// export const agregarQuitarProductoFav = async (idProducto, idUsuario) => {
-//   try {
-//     const producto = await ProductModel.findById(idProducto);
-//     const usuario = await UsuarioModel.findById(idUsuario);
-    
-//     if (usuario.favoritos.includes(producto)) {
-//       usuario.favoritos = usuario.favoritos.filter(fav => fav !== producto);
-//       await usuario.save();
-//       return { message: "Producto eliminado de favoritos", statusCode: 200 };
-//     } else {
-//       usuario.favoritos.push(producto);
-//       await usuario.save();
-//       return { message: "Producto agregado a los favoritos", statusCode: 200 };
-//     }
-//   }
-//   catch (error) {
-//     console.log(error);
-//     return { message: "Error al agregar o quitar producto de favoritos", statusCode: 500 };
-//   }
-// }
-
-// export const agregarProductoCarrito = async (idProducto, idUsuario) => {
-//   try {
-//     const producto = await ProductModel.findById(idProducto);
-//     const usuario = await UsuarioModel.findById(idUsuario);
-//     if (usuario.carrito.includes(producto)) {
-//       return { message: "Producto ya se encuentra en el carrito", statusCode: 400 };
-//     } 
-//     usuario.carrito.push(producto);
-//     await usuario.save();
-//     return { message: "Producto agregado a los carrito", statusCode: 200 };
-//   } catch (error) {
-//     return { message: "Error al agregar o quitar producto de carrito", statusCode: 500 };
-//   }
-// }
-
-// export const eliminarProductoCarrito = async (idProducto, idUsuario) => {
-//   try {
-//     const producto = await ProductModel.findById(idProducto);
-//     const usuario = await UsuarioModel.findById(idUsuario);
-//     if (!usuario.carrito.includes(producto)) return { message: "Producto no se encuentra en el carrito", statusCode: 400 };
-//     usuario.carrito = usuario.carrito.filter(prod => prod !== producto);
-//     await usuario.save();
-//     return { message: "Producto eliminado del carrito", statusCode: 200 };
-//   } catch (error) {
-//     return { message: "Error al eliminar producto de carrito", statusCode: 500 };
-//   }
-// }
-
-
