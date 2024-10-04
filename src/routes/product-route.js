@@ -1,5 +1,5 @@
 const express = require("express");
-const multerConfig = require("../middlewares/multer.js");
+const uploadFile = require("../middlewares/multer.js");
 const {
   actualizarUnProducto,
   crearProducto,
@@ -13,10 +13,10 @@ const router = express.Router();
 
 router.get("/products", traerTodosProductos);
 router.get("/products/:product_id", traerUnProducto);
-router.post("/products", multerConfig.single("imagen"), crearProducto);
+router.post("/products", uploadFile.single("imagen"), crearProducto);
 router.patch(
   "/products/:product_id",
-  multerConfig.single("imagen"),
+  uploadFile.single("imagen"),
   actualizarUnProducto
 );
 router.delete("/products/:product_id", eliminarProducto);

@@ -18,12 +18,10 @@ const ProductSchema = new Schema({
     },
     product_image:{ // url
         type:String,
-        required: true,
         trim: true
     },
     product_image_id:{ // _id
         type:String,
-        required: true,
         trim: true
     },
     product_stock:{

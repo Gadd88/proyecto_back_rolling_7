@@ -1,7 +1,7 @@
 const serviciosProductos = require('../services/product-services.js')
 
 const crearProducto = async (req, res) => {
-  const result = await serviciosProductos.nuevoProducto(req.body, req.file.path)
+  const result = await serviciosProductos.nuevoProducto(req.body, req.file && req.file.path);
   if(result.statusCode === 201) {
     res.status(201).json({message: result.message , status:result.statusCode});
   } 
