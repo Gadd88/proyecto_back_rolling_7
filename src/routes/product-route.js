@@ -7,6 +7,8 @@ const {
   traerProductosPorCategoria,
   traerTodosProductos,
   traerUnProducto,
+  agregarQuitarProductoFavorito,
+  agregarQuitarProductoCarritoController,
 } = require("../controllers/product-controller.js");
 const checkAuth = require("../middlewares/auth.js");
 
@@ -28,8 +30,8 @@ router.patch(
 );
 router.delete("/products/:product_id", checkAuth("admin"), eliminarProducto);
 router.get("/products/category/:category", traerProductosPorCategoria);
-//router.post('/products', checkAuth('admin'));
-//router.patch('/products/:product_id', checkAuth('admin'))
-//router.delete('/products/:product_id', checkAuth('admin'))
+router.post("/products/favoritos/:idProducto", agregarQuitarProductoFavorito);
+router.post("/products/carrito/:idProducto", agregarQuitarProductoCarritoController);
+
 
 module.exports = router;
