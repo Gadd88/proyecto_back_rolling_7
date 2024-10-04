@@ -23,7 +23,7 @@ const UsuarioSchema = new Schema({
   },
   isActive: {
     type: Boolean,
-    default: false
+    default: true
   },
   user_cart: [],
   user_favs: []
@@ -36,4 +36,4 @@ UsuarioSchema.methods.toJSON = function() {
 
 const UsuarioModel = model('users', UsuarioSchema);
 
-module.exports = UsuarioModel;
+module.exports = UsuarioModel

@@ -26,7 +26,6 @@ const nuevoUsuario = async (body) => {
       statusCode: 201,
     };
   } catch (error) {
-    console.log(error);
     return {
       msg: "Error al crear el usuario",
       statusCode: 500,
@@ -52,19 +51,18 @@ const obtenerUsuarios = async () => {
 };
 
 const obtenerUsuario = async (idUsuario) => {
-  try {
+  
     const usuario = await UsuarioModel.findById(idUsuario);
-    return {
-      usuario,
-      statusCode: 200,
-    };
-  } catch (error) {
+    if(usuario){
+      return {
+        usuario,
+        statusCode: 200,
+      };
+    }
     return {
       msg: "Error al obtener el usuario",
       statusCode: 500,
-      error,
     };
-  }
 };
 
 const actualizarUsuario = async (idUsuario, body) => {
@@ -85,13 +83,19 @@ const actualizarUsuario = async (idUsuario, body) => {
 };
 
 const eliminarUsuario = async (idUsuario) => {
-  await UsuarioModel.findByIdAndDelete({ _id: idUsuario });
-  const usuarioDb = await UsuarioModel.find();
-  return {
-    msg: "Usuario eliminado",
-    usuarios: usuarioDb,
-    statusCode: 200,
-  };
+  try{
+    await UsuarioModel.findByIdAndDelete({ _id: idUsuario });
+    return {
+      msg: "Usuario eliminado",
+      statusCode: 200,
+    };
+  }catch(error){
+    return {
+      msg: "Error al eliminar el usuario",
+      statusCode: 500,
+      error,
+    };
+  }
 };
 
 const inicioSesionUsuario = async (body) => {
@@ -105,8 +109,6 @@ const inicioSesionUsuario = async (body) => {
       statusCode: 400,
     };
   }
-  console.log("Contraseña ingresada:", password);
-  console.log("Hash almacenado:", usuarioExiste.password);
 
   if (!password || !usuarioExiste.password) {
     return {
@@ -128,7 +130,7 @@ const inicioSesionUsuario = async (body) => {
     rol: usuarioExiste.user_category,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 
   return {
     token,
@@ -141,9 +143,9 @@ const inicioSesionUsuario = async (body) => {
 
 const habilitarUsuario = async (idUsuario) => {
   const usuario = await UsuarioModel.findById(idUsuario);
-  usuario.bloqueado = false;
+  if(usuario.isActive) return 
+  usuario.isActive = true;
   await usuario.save();
-
   return {
     msg: "Usuario habilitado",
     statusCode: 200,
@@ -152,7 +154,8 @@ const habilitarUsuario = async (idUsuario) => {
 
 const deshabilitarUsuario = async (idUsuario) => {
   const usuario = await UsuarioModel.findById(idUsuario);
-  usuario.bloqueado = true;
+  if(!usuario.isActive) return
+  usuario.isActive = false;
   await usuario.save();
 
   return {

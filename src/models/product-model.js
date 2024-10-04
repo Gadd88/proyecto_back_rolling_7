@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+const { Schema, model } = require('mongoose')
 
 const ProductSchema = new Schema({
     product_name:{
@@ -16,9 +16,12 @@ const ProductSchema = new Schema({
         required: true,
         trim: true
     },
-    product_image:{
+    product_image:{ // url
         type:String,
-        required: true,
+        trim: true
+    },
+    product_image_id:{ // _id
+        type:String,
         trim: true
     },
     product_stock:{
@@ -45,4 +48,4 @@ ProductSchema.methods.toJSON = function() {
 const ProductModel = model('products', ProductSchema)
 
 
-export default ProductModel
+module.exports = ProductModel
