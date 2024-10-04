@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 const checkAuth = (rol) => (req, res, next) => {
     try{
-        const token = req.header('Authorization').split(' ')[1]
+        const token = req.header('Authorization') ? req.header('Authorization').split(' ')[1] : null
         if(!token){
             return res.status(403).json({message: 'No estas autorizado'})
         }
