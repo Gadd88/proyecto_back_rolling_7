@@ -1,18 +1,38 @@
 const ProductModel = require('../models/product-model.js');
 const cloudinary = require('../utils/cloudinary.js');
+const fs = require('fs')
 
  const nuevoProducto = async (body, imagenPath) => {
   const bodyProduct = body;
-  try {
-    const imagen = await cloudinary.uploader.upload(imagenPath);
-    bodyProduct.product_image = imagen.secure_url
-    bodyProduct.product_image_id = imagen.public_id
-  } catch (error) {
-    return {
-      message: "Problemas con la carga de imagen",
-      statusCode: 500,
-    };
+
+  bodyProduct.price = Number(bodyProduct.price);
+  bodyProduct.stock = Number(bodyProduct.stock);
+
+  if (imagenPath) {
+    try {
+      const imagen = await cloudinary.uploader.upload(imagenPath, {
+        folder: 'onlypan',
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true,
+        resource_type: 'auto',
+      });
+      fs.unlink(imagenPath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      })
+      bodyProduct.product_image = imagen.url
+      bodyProduct.product_image_id = imagen.public_id
+    } catch (error) {
+      console.log(error)
+      return {
+        message: "Problemas con la carga de imagen",
+        statusCode: 500,
+      };
+    }
   }
+
   try {
     const producto = new ProductModel(bodyProduct);
     await producto.save();
@@ -88,7 +108,7 @@ const cloudinary = require('../utils/cloudinary.js');
   if(req.file) {
     try {
       const imagen = await cloudinary.uploader.upload(req.file.path);
-      bodyProduct.product_image = imagen.secure_url
+      bodyProduct.product_image = imagen.url
       bodyProduct.product_image_id = imagen.public_id
       await eliminarImagen(idProducto)
     } catch (error) {
