@@ -8,11 +8,20 @@ const swaggerSpecs = require("./src/utils/swaggerDocs.js");
 const swaggerUi = require("swagger-ui-express");
 
 const PORT = process.env.PORT ? process.env.PORT : 3001;
+const allowedOrigins = ['https://onlypan.netlify.app', 'http://localhost:5173', 'http://localhost:5174'];
 
 const app = express();
 
 //middlewares
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.json());
 
