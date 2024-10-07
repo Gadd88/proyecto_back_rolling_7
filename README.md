@@ -9,14 +9,21 @@ OnlyPan
 - Facundo Cuezzo
 - Luis Chrestia
 
-### Deploy
+### Deploy Backend
 https://proyecto-back-rolling-7.onrender.com/api
+
+### Deploy Frontend - SOLO CARRITO PARA MOSTRAR CUENTA DE PRUEBA DE MERCADOPAGO
+https://onlypan.netlify.app/
 
 ### Documentación
 https://proyecto-back-rolling-7.onrender.com/api/doc
 
 ### Repositorio
 https://github.com/Gadd88/proyecto_back_rolling_7
+
+### Aclaraciones
+- FRONTEND: la vista realizada para el frontend solo incluye el LISTADO DE PRODUCTOS Y CARRITO DE COMPRAS, ya que fue realizada para la demostración del funcionamiento de la implementación de MERCADOPAGO utilizando las cuentas de prueba provistas para desarrolladores. Librerias utilizadas: Bootstrap, ReactRouter, MercadoPago.
+- BACKEND: La implementación de mercadopago se hizo a través de una cuenta personal, por lo que, para utilizar la integración, fuera de esta api, deberia de crearse la implementación desde el sitio web de MercadoPago para desarrolladores y utilizar los ACCESS_TOKEN, que provee MP para cada implementación creada, en un archivo .env como se muestra en el archivo .env.example de este repositorio
 
 ### Requisitos Técnicos:
 
