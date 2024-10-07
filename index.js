@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-require('dotenv').config();
-require("dotenv/config");
+// require('dotenv').config();
+// require("dotenv/config");
 const routes = require('./src/routes/');
 const { connectDB } = require("./src/utils/connectDB.js");
 const swaggerSpecs = require("./src/utils/swaggerDocs.js");

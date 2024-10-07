@@ -1,4 +1,5 @@
-const serviciosProductos = require('../services/product-services.js')
+const serviciosProductos = require('../services/product-services.js');
+const cobroConMp = require('../utils/cobromp.js');
 
 const crearProducto = async (req, res) => {
   const result = await serviciosProductos.nuevoProducto(req.body, req.file && req.file.path);
@@ -60,7 +61,6 @@ const agregarQuitarProductoFavorito = async (req, res) => {
   //6700670aba361c6683acbc7d
   //product
   //670067773a2772974bf04d36
-  console.log(req.body.idUsuario, "usuario")
   const result = await serviciosProductos.agregarQuitarProductoFav(req.params.idProducto, req.body.idUsuario);
   if(result.statusCode === 200) {
     res.status(200).json({status:result.statusCode, message: result.message});
@@ -77,6 +77,15 @@ const agregarQuitarProductoCarritoController = async (req, res) => {
   }
 }
 
+const cobrarProductos = async(req, res) => {
+  const result = await cobroConMp(req.body);
+  if(result.statusCode === 200) {
+    res.status(200).json({status:result.statusCode, message: result.urlPay});
+  } else {
+    res.status(500).json({status:result.statusCode, message: result.message});
+  }
+}
+
 module.exports = {
   crearProducto,
   traerTodosProductos,
@@ -85,5 +94,6 @@ module.exports = {
   eliminarProducto,
   traerProductosPorCategoria,
   agregarQuitarProductoFavorito,
-  agregarQuitarProductoCarritoController
+  agregarQuitarProductoCarritoController,
+  cobrarProductos
 }

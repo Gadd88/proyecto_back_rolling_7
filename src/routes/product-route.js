@@ -9,6 +9,7 @@ const {
   traerUnProducto,
   agregarQuitarProductoFavorito,
   agregarQuitarProductoCarritoController,
+  cobrarProductos,
 } = require("../controllers/product-controller.js");
 const checkAuth = require("../middlewares/auth.js");
 
@@ -32,6 +33,7 @@ router.delete("/products/:product_id", checkAuth("admin"), eliminarProducto);
 router.get("/products/category/:category", traerProductosPorCategoria);
 router.post("/products/favoritos/:idProducto", agregarQuitarProductoFavorito);
 router.post("/products/carrito/:idProducto", agregarQuitarProductoCarritoController);
+router.post("/products/cobrar", cobrarProductos)
 
 
 module.exports = router;
